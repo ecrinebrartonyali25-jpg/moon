@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ay Kaşifi - Premium Sürüm</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            font-family: 'Rajdhani', sans-serif;
+            color: #e0ffff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 40, 60, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00f2ff;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ccff;
+        }
+
+        /* ANA MENÜ (PREMIUM SCIFI ARAYÜZ) */
+        #start {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, rgba(0, 40, 60, 0.5), rgba(0, 5, 10, 0.95));
+            backdrop-filter: blur(10px);
+            z-index: 300;
+            transition: opacity 0.5s ease;
+        }
+
+        #menu-container {
+            background: rgba(5, 15, 25, 0.8);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.15);
+            padding: 40px 50px;
+            border-radius: 16px;
+            text-align: center;
+            width: 450px;
+        }
+
+        .game-title {
+            font-size: 64px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #00f2ff, #00ff66);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #88ccff;
+            letter-spacing: 3px;
+            margin-bottom: 35px;
+            opacity: 0.8;
+        }
+
+        .menu-btn {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            letter-spacing: 1.5px;
+        }
+
+        .menu-btn:hover {
+            background: rgba(0, 242, 255, 0.2);
+            border-color: #00f2ff;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        #btn-start {
+            background: rgba(0, 255, 100, 0.15);
+            border-color: #00ff66;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 255, 100, 0.8);
+            margin-bottom: 25px;
+            font-size: 24px;
+            padding: 20px;
+        }
+
+        #btn-start:hover {
+            background: rgba(0, 255, 100, 0.3);
+            box-shadow: 0 0 25px rgba(0, 255, 100, 0.6);
+        }
+
+        .menu-modal {
+            text-align: left;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-modal h2 {
+            border-bottom: 2px solid rgba(0, 242, 255, 0.5);
+            padding-bottom: 10px;
+            color: #00f2ff;
+            font-weight: 700;
+            margin-top: 0;
+        }
+
+        .menu-modal p {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #cceeff;
+        }
+
+        .char-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .char-card {
+            padding: 15px;
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 8px;
+            text-align: center;
+            transition: 0.3s;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .char-card.active {
+            border-color: #00f2ff;
+            background: rgba(0, 242, 255, 0.15);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+
+        .char-card.locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: #555;
+        }
+
+        .char-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .btn-back {
+            background: rgba(255, 50, 50, 0.1);
+            border-color: rgba(255, 50, 50, 0.5);
+            color: #ff8888;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .store-item {
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .store-item:hover {
+            background: rgba(0, 242, 255, 0.1);
+            border-color: #00f2ff;
+        }
+
+        .store-item h4 {
+            margin: 0;
+            color: #00f2ff;
+            font-size: 18px;
+        }
+
+        .store-item p {
+            margin: 5px 0 0 0;
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .store-btn {
+            background: #00f2ff;
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Rajdhani';
+        }
+
+        .store-btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .balance-badge {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff66;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid #00ff66;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* YENİ: SÜSLEME ENVANTERİ (HUD - MERKEZ) */
+        #deco-inventory {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 500; /* Çok üstte olmalı */
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .deco-slot {
+            width: 76px;
+            height: 96px;
+            background: rgba(0, 30, 45, 0.9);
+            border: 2px solid rgba(0, 242, 255, 0.4);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .deco-slot.active {
+            border-color: #00ff66;
+            box-shadow: 0 0 20px rgba(0, 255, 100, 0.4);
+            transform: translateY(-10px);
+        }
+
+        .deco-slot .icon {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .deco-slot .count {
+            background: #00f2ff;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+
+        .deco-slot .key-hint {
+            font-size: 10px;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        /* İMLEÇ (CROSSHAIR) İPTAL - ÇÜNKÜ FARE KULLANILACAK */
+        #crosshair {
+            display: none !important;
+        }
+
+        .ch-line {
+            position: absolute;
+            background: rgba(0, 242, 255, 0.8);
+        }
+
+        .ch-v {
+            width: 2px;
+            height: 10px;
+            left: 14px;
+        }
+
+        .ch-h {
+            width: 10px;
+            height: 2px;
+            top: 14px;
+        }
+
+        #ch-dot {
+            position: absolute;
+            top: 13px;
+            left: 13px;
+            width: 4px;
+            height: 4px;
+            background: #00f2ff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #00f2ff;
+        }
+
+        #helmet-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        #visor-glass {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 10, 20, 0) 30%, rgba(0, 5, 10, 0.4) 100%);
+            box-shadow: inset 0 0 150px rgba(0, 242, 255, 0.05);
+        }
+
+        /* OYUN İÇİ U.I PANELS */
+        .ui-panel {
+            background: rgba(5, 15, 25, 0.7);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        #ui-mission {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            border-left: 4px solid #00ff66;
+            width: 320px;
+        }
+
+        #earth-progress {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 450px;
+            text-align: center;
+        }
+
+        #energy-guide {
+            position: absolute;
+            top: 120px;
+            right: 40px;
+            width: 240px;
+            font-size: 13px;
+        }
+
+        #energy-guide div {
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #o2-container {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            width: 220px;
+        }
+
+        #o2-bar {
+            height: 12px;
+            background: rgba(0, 40, 60, 0.8);
+            border: 1px solid #00f2ff;
+            border-radius: 6px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        #o2-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #0088ff, #00f2ff);
+            transition: width 0.3s;
+            box-shadow: 0 0 10px #00f2ff;
+        }
+
+        #ui-status {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            min-width: 280px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .stat-val {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        #ui-inventory {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            display: grid;
+            grid-template-columns: repeat(5, 56px);
+            gap: 8px;
+        }
+
+        .slot {
+            width: 56px;
+            height: 56px;
+            border: 1px dashed rgba(0, 242, 255, 0.4);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            background: rgba(0, 20, 30, 0.5);
+            transition: 0.3s;
+        }
+
+        .slot span {
+            font-size: 10px;
+            margin-top: 3px;
+            font-weight: bold;
+            color: #00f2ff;
+        }
+
+        .slot.full {
+            border-style: solid;
+            border-color: #00f2ff;
+            background: rgba(0, 242, 255, 0.15);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+
+        /* İSTASYON MARKETİ (OYUN İÇİ UPG) */
+        #upgrade-panel {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 300;
+            width: 500px;
+            background: rgba(5, 15, 25, 0.95);
+            box-shadow: 0 0 60px rgba(0, 242, 255, 0.3);
+            pointer-events: auto;
+            padding: 30px;
+        }
+
+        .upg-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            align-items: center;
+            border-bottom: 1px dashed rgba(0, 242, 255, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .upg-item:last-child {
+            border: none;
+        }
+
+        .upg-btn {
+            background: rgba(0, 242, 255, 0.1);
+            color: #00f2ff;
+            border: 1px solid #00f2ff;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-family: 'Rajdhani';
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .upg-btn:hover:not(:disabled) {
+            background: #00f2ff;
+            color: #000;
+            box-shadow: 0 0 15px #00f2ff;
+        }
+
+        .upg-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888;
+            border-color: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #dock-prompt {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ff66;
+            display: none;
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(0, 255, 100, 0.8);
+        }
+
+        #full-warning {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff3333;
+            font-size: 32px;
+            font-weight: bold;
+            display: none;
+            text-shadow: 0 0 15px #f00;
+        }
+
+        #collection-notice {
+            position: absolute;
+            left: 40px;
+            top: 260px;
+            transform: scale(0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 20, 35, 0.95);
+            border: 1px solid #00f2ff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+            z-index: 120;
+            text-align: center;
+            min-width: 160px;
+            max-width: 200px;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+        }
+
+        #collection-notice .icon {
+            font-size: 32px;
+            margin-bottom: 2px;
+            filter: drop-shadow(0 0 8px rgba(0, 242, 255, 0.4));
+        }
+
+        #collection-notice .name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0px;
+            letter-spacing: 0.5px;
+        }
+
+        #collection-notice .value {
+            color: #00ff66;
+            font-size: 14px;
+            font-weight: 700;
+            text-shadow: 0 0 8px #00f2ff;
+            margin-bottom: 3px;
+        }
+
+        #collection-notice .info {
+            font-size: 10px;
+            color: #bbeeFF;
+            line-height: 1.4;
+            border-top: 1px dashed rgba(0, 242, 255, 0.2);
+            padding-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PREMIUM MAIN MENU -->
+    <div id="start">
+        <div id="menu-container">
+            <!-- ANA EKRAN -->
+            <div id="main-view">
+                <h1 class="game-title" style="font-size: 50px;">AY KAŞİFİ</h1>
+                <p class="subtitle">SÜRDÜRÜLEBİLİR ENERJİ SİMÜLASYONU</p>
+
+                <button class="menu-btn" id="btn-start">🚀 OYUNA BAŞLA</button>
+                <button class="menu-btn" onclick="openMenu('modal-char')">👩🚀 KARAKTER SEÇİMİ</button>
+                <button class="menu-btn" onclick="openMenu('modal-store')">💎 İSTASYON MAĞAZASI</button>
+                <button class="menu-btn" onclick="openMenu('modal-about')">📜 HİKAYE VE OYUN HAKKINDA</button>
+            </div>
+
+            <!-- KARAKTER MODALI -->
+            <div id="modal-char" class="menu-modal" style="display:none;">
+                <h2>👩‍🚀 Karakter Seçimi</h2>
+                <div class="char-grid" id="char-selection-grid">
+                    <!-- Dinamik olarak JS'den yüklenecek -->
+                </div>
+                <button class="menu-btn btn-back" onclick="openMenu('main-view')">⬅ Ana Menüye Dön</button>
+            </div>
+
+            <!-- MAĞAZA MODALI (IMG REPLICA) -->
+            <div id="modal-store" class="menu-modal" style="display:none; background: #050f19; border: 1px solid #00f2ff33; border-radius: 20px; padding: 40px; box-shadow: 0 0 40px rgba(0,0,0,0.5);">
+                <h2 style="color:#00f2ff; border:none; display:flex; align-items:center; gap:10px; font-size: 32px; margin-top:0;">💎 Kozmetik Mağazası</h2>
+                <div style="height:2px; background: linear-gradient(90deg, #00f2ff, transparent); margin-bottom:30px;"></div>
+                
+                <p style="color:#cceeff; font-size:18px; line-height:1.6; margin-bottom:30px;">Oyun içinde topladığınız nadir taşlarla (Yıldız Tozu, Karanlık Madde) astronot kıyafetinizi ve İstasyon renklerini özelleştirebileceğiniz devasa bir galeri.</p>
+                
+                <div style="border: 2px dashed #00f2ff66; border-radius:15px; padding:30px; text-align:center; background: rgba(0, 242, 255, 0.03); margin-bottom:40px;">
+                    <div style="color:#00f2ff; font-weight:bold; font-size:22px; margin-bottom:10px;">🚧 Yapım Aşamasında</div>
+                    <div style="color:#88ccff; font-size:16px;">Hackathon'un bir sonraki aşamasında aktif olacaktır!</div>
+                </div>
+                
+                <button class="menu-btn" style="background: rgba(255, 50, 50, 0.05); border-color: #ff333333; color: #ff8888; font-size: 20px; padding:15px;" onclick="openMenu('main-view')">⬅ Ana Menüye Dön</button>
+            </div>
+
+            <!-- OYUN HAKKINDA MODALI -->
+            <div id="modal-about" class="menu-modal" style="display:none;">
+                <h2>📜 Ay Kaşifi Hakkında</h2>
+                <p>Yıl 2099. Dünya'nın fosil ve yenilenebilir enerji altyapısı devasa bir güneş patlamasıyla tamamen yok
+                    oldu. İnsanlık son enerji kırıntılarıyla <b>GÖKDOĞAN</b> uzay istasyonunu Ay'a fırlattı.</p>
+                <p>Görevlendirilen 1 Numaralı Astronot (Gökdoğan) olarak senin vazifen, ay yüzeyindeki yüksek enerjili
+                    regolitleri, nadir meteoritleri ve karanlık madde parçacıklarını toplayıp İstasyon aracılığıyla
+                    Dünya'ya transfer etmek.</p>
+                <p style="color:#00ff66; font-size:18px; font-weight:bold; margin-top:20px;">Hedef: Dünyanın Kalbini
+                    Yeniden Atırmak İçin 50,000 kWh!</p>
+                <button class="menu-btn btn-back" onclick="openMenu('main-view')">⬅ Ana Menüye Dön</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="crosshair" style="display:none!important;">
+        <div class="ch-line ch-v" style="top:0"></div>
+        <div class="ch-line ch-v" style="bottom:0"></div>
+        <div class="ch-line ch-h" style="left:0"></div>
+        <div class="ch-line ch-h" style="right:0"></div>
+        <div id="ch-dot"></div>
+    </div>
+
+    <div id="helmet-container">
+        <div id="visor-glass"></div>
+
+        <div id="ui-mission" class="ui-panel">
+            <div
+                style="font-size: 12px; opacity: 0.6; border-bottom: 1px solid rgba(0,255,100,0.5); margin-bottom: 5px; letter-spacing:1px;">
+                AKTİF MİSYON</div>
+            <div id="mission-text" style="font-size: 15px;">Maksimum enerji potansiyeline sahip kaynaklar (Helyum-3 vb.)
+                topla ve İstasyona aktararak <b>DÜNYA'YI KURTAR!</b></div>
+        </div>
+
+        <!-- HİKAYE/QUEST: DÜNYA KURTARMA İLERLEMESİ -->
+        <div id="earth-progress" class="ui-panel">
+            <div style="font-size: 18px; margin-bottom: 8px; letter-spacing: 2px; font-weight:700;">🌍 DÜNYA RESTORASYON
+                PROJESİ <span id="level-text" style="color:#ffaa00; margin-left:10px;">(SEVİYE 1)</span></div>
+            <div
+                style="height: 18px; border: 1px solid rgba(0,255,100,0.5); background: rgba(0,0,0,0.5); border-radius: 9px; overflow: hidden;">
+                <div id="earth-fill"
+                    style="height: 100%; width: 0%; background: linear-gradient(90deg, #009944, #00ff66); transition: width 0.5s; box-shadow: 0 0 15px #00ff66;">
+                </div>
+            </div>
+            <div style="font-size: 14px; margin-top: 5px; text-align: right; color:#aaa;"><span id="earth-sent"
+                    style="color:#00ff66; font-weight:bold; font-size:16px;">0</span> / <span
+                    id="earth-target">10000</span> kWh</div>
+        </div>
+
+        <div id="energy-guide" class="ui-panel">
+            <div
+                style="font-size: 13px; font-weight: 700; border-bottom: 1px solid rgba(0,242,255,0.4); margin-bottom: 8px; position: sticky; top: 0; background: rgba(5, 15, 25, 0.95); padding-bottom:5px;">
+                📋 VERİ SÖZLÜĞÜ (KILAVUZ)</div>
+            <div id="dictionary-list"></div>
+        </div>
+
+        <div id="o2-container" class="ui-panel">
+            <div style="font-weight: 600; letter-spacing: 1px; font-size: 14px;">🫁 YAŞAM DESTEĞİ (O2)</div>
+            <div id="o2-bar">
+                <div id="o2-fill"></div>
+            </div>
+        </div>
+
+        <div id="btn-pause-menu" class="ui-panel"
+            style="position: absolute; top: 40px; right: 290px; padding: 10px 15px; cursor: pointer; color: #ffaa00; border-color: rgba(255, 170, 0, 0.5); font-weight: bold; background: rgba(5, 15, 25, 0.9); pointer-events: auto;"
+            onmouseover="this.style.background='rgba(255,170,0,0.2)'"
+            onmouseout="this.style.background='rgba(5, 15, 25, 0.9)'" onclick="pauseGame()">
+            ⏸ DURAKLAT
+        </div>
+
+        <!-- SÜSLEME ÇANTASI (HUD) -->
+        <div id="deco-inventory" style="display:none; flex-direction:column; align-items:center;">
+             <div style="font-size:10px; color:#00f2ff; margin-bottom:5px; letter-spacing:1px; font-weight:bold;">🖼️ SÜSLEME ÇANTASI</div>
+             <div id="deco-items-container" style="display:flex; gap:10px;"></div>
+             <div style="font-size:11px; color:#00ff66; margin-top:8px; background:rgba(0,0,0,0.6); padding:4px 10px; border-radius:10px; border:1px solid rgba(0,255,100,0.3);">
+                [1] DİK (YERLEŞTİR) | [2] GERİ AL (TOPLA)
+             </div>
+        </div>
+
+        <div id="ui-status" class="ui-panel">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px dashed rgba(0,242,255,0.4); padding-bottom:10px; font-weight:700; font-size:14px;">
+                <div style="color:#00ff66;">🌍 DÜNYA: <span id="earth-clock">00:00:00</span></div>
+                <div style="color:#ffaa00;">🌙 AY: <span id="moon-clock">06:00</span> LMT</div>
+            </div>
+            <div id="astro-id-card" style="margin-bottom: 10px; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:10px;">🆔
+                ASTRO-ID: <span id="ui-status-name" style="color:#00f2ff;">Pilot Gökdoğan</span></div>
+            <div style="color: #ffaa00;">🌡️ DIŞ ISI: <span id="temp" class="stat-val">0</span>°C</div>
+            <div style="color: #00ff66;">⚡ ENVANTERDEKİ ENERJİ: <span id="potential" class="stat-val">0</span> kWh</div>
+            <div style="color: #00f2ff;">🔋 İSTASYON CÜZDANI: <span id="energy" class="stat-val">0</span> kWh</div>
+            <div style="color: #aaa; margin-top:5px;">📍 KONUM SEKTÖRÜ: <span id="coords">0, 0</span></div>
+            <div style="margin-top: 10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1);">📦 BAGAJ: <span
+                    id="tas" class="stat-val" style="color:#fff;">0</span> / <span id="tas-max">10</span></div>
+        </div>
+
+        <div id="collection-notice">
+            <div class="icon" id="cn-icon">🌕</div>
+            <div class="name" id="cn-name">Ay Regoliti</div>
+            <div class="value">+<span id="cn-value">50</span> kWh</div>
+            <div class="info" id="cn-info">Bilgi metni buraya gelecek.</div>
+        </div>
+
+        <div id="ui-inventory">
+            <!-- JS Dinamik Slotlar -->
+        </div>
+
+        <!-- DURAKLATMA (PAUSE) EKRANI -->
+        <div id="pause-screen"
+            style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:400; justify-content:center; align-items:center; flex-direction:column; backdrop-filter:blur(8px); pointer-events:auto;">
+            <h1
+                style="color:#ff3333; font-size:72px; text-shadow:0 0 30px #f00; margin-bottom:30px; letter-spacing: 5px;">
+                OYUN DURAKLATILDI</h1>
+            <button class="menu-btn"
+                style="width:350px; padding:20px; font-size:22px; background:rgba(0, 255, 100, 0.15); border-color:#00ff66; color:#fff;"
+                onmouseover="this.style.background='rgba(0,255,100,0.3)'"
+                onmouseout="this.style.background='rgba(0,255,100,0.15)'" onclick="resumeGame()">▶ OYUNA DEVAM
+                ET</button>
+            <button class="menu-btn"
+                style="width:350px; padding:20px; font-size:22px; background:rgba(255, 50, 50, 0.15); border-color:#ff3333; color:#fff; margin-top:15px;"
+                onmouseover="this.style.background='rgba(255,50,50,0.3)'"
+                onmouseout="this.style.background='rgba(255,50,50,0.15)'" onclick="returnToMenu()">⬅ ANA MENÜYE
+                DÖN</button>
+        </div>
+
+        <!-- MARKETE / UPGRADE UI -->
+        <div id="upgrade-panel">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid rgba(0,242,255,0.5); padding-bottom:10px;">
+                <h2 style="margin:0; color:#00f2ff; font-weight:700;">🔧 İSTASYON MARKETİ</h2>
+                <div style="color:#00f2ff; font-weight:bold; font-size:24px;"><span id="upg-balance">0</span><span
+                        style="font-size:14px; color:#aaa;"> kWh</span></div>
+            </div>
+            <div style="font-size:15px; margin: 15px 0; color:#bbb;">Dünya dışı bütçeni kıyafetini geliştirmek için
+                kullan. Tüm insanlık sana güveniyor.</div>
+
+            <div class="upg-item">
+                <div><strong style="font-size:18px;">📦 Gelişmiş Envanter Deposu [v2]</strong><br><span
+                        style="font-size:13px; color:#aaa;">Kapasiteyi 10'dan 20 taş yuvasına çıkartır. Toplamayı müthiş
+                        hızlandırır.</span></div>
+                <button id="btn-upg-cargo" class="upg-btn">1500 kWh</button>
+            </div>
+            <div class="upg-item">
+                <div><strong style="font-size:18px;">🫁 Gelişmiş Oksijen Filtresi</strong><br><span
+                        style="font-size:13px; color:#aaa;">Yaşam destek ünitesinin O2 harcama oranını sıfıra
+                        yaklaştırır.</span></div>
+                <button id="btn-upg-o2" class="upg-btn">2500 kWh</button>
+            </div>
+            <div class="upg-item">
+                <div><strong style="font-size:18px;">🏢 İstasyon Genişletme Modülü</strong><br><span
+                        style="font-size:13px; color:#aaa;">İstasyonun boyutunu ve kapasitesini büyütür. Birden fazla
+                        kez alınabilir.</span></div>
+                <button id="btn-upg-station" class="upg-btn">3000 kWh</button>
+            </div>
+
+            <div
+                style="text-align:center; font-size:14px; margin-top:25px; color:#00f2ff; animation: blink 2s infinite; font-weight:600;">
+                [Q] BASARAK MENÜYÜ KAPAT</div>
+        </div>
+
+    </div>
+
+    <div id="full-warning" class="ui-panel">⚠️ ENVANTER DOLU! ŞİMDİ ENERJİYİ İSTASYONA AKTAR.</div>
+    <div id="dock-prompt" class="ui-panel">⚓ [E] DÜNYA'YA YOLLA | 🔋 [R] CÜZDANA AKTAR | 🔧 [Q] İSTASYON MARKETİ</div>
+
+    <!-- Scripts moved into module for correct scoping -->
+
+
+    <!-- Importmap ve EffectComposer Importları -->
+    <script type="importmap">
+{
+    "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+}
+</script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+        const ROCK_DB = [
+            { id: 1, name: "Ay Regoliti", color: 0x666666, icon: '🌕', value: 200, reqLevel: 1, info: "Ay'ın yüzeyi. Temel seviye enerji barındırır." },
+            { id: 2, name: "Titanyum Cevheri", color: 0xc0c0c0, icon: '⚙️', value: 800, reqLevel: 1, info: "Dayanıklı ve hafif yapısal metal." },
+            { id: 3, name: "Buz Kristali", color: 0xadd8e6, icon: '🧊', value: 400, reqLevel: 1, info: "Milyarlarca yıllık donmuş antik su kalıntısı." },
+            { id: 4, name: "Helyum-3", color: 0x00f2ff, icon: '💎', value: 2000, reqLevel: 2, info: "Nükleer füzyon için paha biçilemez bir izotop." },
+            { id: 5, name: "Mars Meteoriti", color: 0xff3300, icon: '🔴', value: 1200, reqLevel: 2, info: "Kızıl gezegenden gelmiş, yüksek ısı potansiyelli demir oksit." },
+            { id: 6, name: "Güneş Taşları", color: 0xffa500, icon: '🪨', value: 1600, reqLevel: 3, info: "Plazma motorlarını ateşleyen sıcak kristaller." },
+            { id: 7, name: "Kozmik Obsidyen", color: 0x111111, icon: '🌑', value: 600, reqLevel: 3, info: "Derin uzay volkanizması tortusu fırınlanmış cam." },
+            { id: 8, name: "Uraninit", color: 0x228B22, icon: '☢️', value: 3000, reqLevel: 4, info: "Yüksek radyoaktiviteye sahip uranyum zengini mineral." },
+            { id: 9, name: "Yıldız Tozu", color: 0xffffff, icon: '✨', value: 4000, reqLevel: 5, info: "Süpernova kalıntısı, ölçülemez radyasyon barındırır." },
+            { id: 10, name: "Karanlık Madde", color: 0x800080, icon: '🔮', value: 8000, reqLevel: 6, info: "Görünmez doku yumağı. Çok ama çok tehlikeli bir enerji." }
+        ];
+
+        window.CHARACTERS = [
+            { id: 0, name: "Pilot Gökdoğan", icon: "👨‍🚀", desc: "Standart Astronot. Dengeli.", reqLevel: 1, color: "#00f2ff", traits: { speed: 0.75, o2Drain: 0.003, cargo: 10 } },
+            { id: 1, name: "Mühendis Yakamoz", icon: "🧑‍🔧", desc: "Hızlı hareket eder (+%50 Hız). O2 çabuk tükenir.", reqLevel: 5, color: "#00ff66", traits: { speed: 1.15, o2Drain: 0.004, cargo: 10 } },
+            { id: 2, name: "Biyolog Zümrüt", icon: "🧑‍🔬", desc: "Oksijen tüketimi aşırı yavaştır.", reqLevel: 10, color: "#ffaa00", traits: { speed: 0.75, o2Drain: 0.0015, cargo: 10 } },
+            { id: 3, name: "A.I. Sentetik", icon: "🤖", desc: "Mekanik yapı. 20 kargo kapasitesi.", reqLevel: 15, color: "#ff5555", traits: { speed: 0.85, o2Drain: 0.003, cargo: 20 } },
+            { id: 4, name: "Kyborg X-7", icon: "🦿", desc: "Aşırı hızlı, dayanıklı. (+%100 Hız, 20 Kargo)", reqLevel: 20, color: "#aa00ff", traits: { speed: 1.5, o2Drain: 0.003, cargo: 20 } },
+            { id: 5, name: "Kaptan Nova", icon: "🌌", desc: "Seçkin görevli. (O2 Çok Yavaş, 30 Kargo)", reqLevel: 25, color: "#ff00aa", traits: { speed: 0.9, o2Drain: 0.001, cargo: 30 } },
+            { id: 6, name: "Galaktik Gezgin", icon: "🛸", desc: "Efsanevi. (Maksimum Hız ve 40 Kargo)", reqLevel: 30, color: "#ffff00", traits: { speed: 1.5, o2Drain: 0.0005, cargo: 40 } }
+        ];
+
+        window.openMenu = (menuId) => {
+            document.getElementById('main-view').style.display = 'none';
+            document.getElementById('modal-char').style.display = 'none';
+            document.getElementById('modal-about').style.display = 'none';
+            document.getElementById('modal-store').style.display = 'none';
+            document.getElementById(menuId).style.display = 'block';
+        };
+
+        window.updateDictionary = () => {
+            const dictList = document.getElementById("dictionary-list");
+            dictList.innerHTML = "";
+            ROCK_DB.forEach(rock => {
+                const isLocked = (window.currentLevel || 1) < rock.reqLevel;
+                dictList.innerHTML += `
+                    <div style="opacity: ${isLocked ? 0.5 : 1}; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
+                        <span style="font-size:16px;">${isLocked ? '🔒' : rock.icon}</span> 
+                        <b style="color:${isLocked ? '#888' : '#00f2ff'}">${rock.name}</b>: 
+                        ${isLocked ? `<i style="font-size:11px; color:#ff3333;">(Seviye ${rock.reqLevel} Gerekli)</i>` : `${rock.value} kWh`}
+                    </div>`;
+            });
+        };
+        window.updateDictionary();
+
+        window.updateCharSelectionUI = () => {
+            const grid = document.getElementById("char-selection-grid");
+            if (!grid) return;
+            grid.innerHTML = "";
+            window.CHARACTERS.forEach(char => {
+                const isActive = window.activeCharId === char.id;
+                const isLocked = (window.currentLevel || 1) < char.reqLevel;
+                grid.innerHTML += `
+                    <div class="char-card ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}" 
+                        ${isLocked ? '' : `onclick="selectChar(${char.id})"`}>
+                        <div class="char-icon">${isLocked ? '🔒' : char.icon}</div>
+                        <div style="font-weight:700; color:${isLocked ? '#777' : '#00f2ff'}; text-shadow: ${isLocked ? 'none' : '0 0 10px rgba(0,242,255,0.5)'};">${char.name}</div>
+                        <div style="font-size:12px; margin-top:5px; color:${isLocked ? '#444' : '#aaa'};">${isLocked ? `Seviye ${char.reqLevel} Gerekli` : char.desc}</div>
+                    </div>
+                `;
+            });
+        };
+        window.activeCharId = 0;
+        window.selectChar = (id) => {
+            window.activeCharId = id;
+            const char = window.CHARACTERS.find(c => c.id === id);
+            maxCargo = char.traits.cargo;
+            o2Drain = char.traits.o2Drain;
+            document.getElementById("ui-status-name").innerText = char.name;
+            document.getElementById("tas-max").innerText = maxCargo;
+            updateInventorySlots();
+            window.updateCharSelectionUI();
+        };
+        window.updateCharSelectionUI();
+
+        let oxygen = 100, tasSkor = 0, totalEnergy = 0, potentialEnergy = 0;
+        let earthSent = 0;
+        const earthTarget = 50000;
+
+        let maxCargo = 10;
+        let o2Drain = 0.003;
+        let jumpForce = 0.35;
+        let upgradeMenuOpen = false;
+
+        function updateInventorySlots() {
+            const inv = document.getElementById("ui-inventory");
+            inv.innerHTML = "";
+            for (let i = 0; i < maxCargo; i++) {
+                inv.innerHTML += `<div class="slot" id="slot-${i}"></div>`;
+            }
+            inv.style.gridTemplateColumns = maxCargo > 10 ? "repeat(10, 56px)" : "repeat(5, 56px)";
+        }
+        updateInventorySlots();
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth / 1.5, window.innerHeight / 1.5), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.8;
+        bloomPass.strength = 1.6;
+        bloomPass.radius = 0.5;
+        const outputPass = new OutputPass();
+
+        const composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+        composer.addPass(outputPass);
+
+        const starPositions = [];
+        for (let i = 0; i < 3000; i++) starPositions.push((Math.random() - 0.5) * 40000, Math.random() * 20000, (Math.random() - 0.5) * 40000);
+        const starGeo = new THREE.BufferGeometry();
+        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+        scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 2 })));
+
+        function getNoise(x, z) { return Math.sin(x * 0.002) * 50 + Math.cos(z * 0.002) * 50; }
+        const groundGeo = new THREE.PlaneGeometry(35000, 35000, 50, 50);
+        const vPos = groundGeo.attributes.position;
+        for (let i = 0; i < vPos.count; i++) vPos.setZ(i, getNoise(vPos.getX(i), vPos.getY(i)));
+        groundGeo.computeVertexNormals();
+        const moonTex = new THREE.TextureLoader().load('https://threejs.org/examples/textures/planets/moon_1024.jpg');
+        moonTex.wrapS = moonTex.wrapT = THREE.RepeatWrapping; moonTex.repeat.set(100, 100);
+        const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ map: moonTex, roughness: 1.0, metalness: 0.1 }));
+        ground.rotation.x = -Math.PI / 2;
+        scene.add(ground);
+
+        const station = new THREE.Group();
+        const sMesh = new THREE.Mesh(new THREE.CylinderGeometry(25, 25, 60, 16), new THREE.MeshStandardMaterial({ color: 0xcccccc, emissive: 0x004455, emissiveIntensity: 0.8 }));
+        station.add(sMesh);
+        station.position.set(0, getNoise(0, 0) + 10, 0);
+        scene.add(station);
+
+        const sLight = new THREE.PointLight(0x00f2ff, 12, 300);
+        sLight.position.set(0, 40, 0);
+        station.add(sLight);
+
+        const placedDecos = [];
+        const rocks = [];
+        const rockGeo = new THREE.DodecahedronGeometry(2.5, 0);
+        const materials = {};
+
+        function spawnRocksForLevel(level) {
+            const levelTypes = ROCK_DB.filter(r => r.reqLevel === level);
+            if (levelTypes.length === 0) return 0;
+            
+            let count = 0;
+            for (let i = 0; i < 2000; i++) {
+                const type = levelTypes[Math.floor(Math.random() * levelTypes.length)];
+                if (!materials[type.id]) {
+                    const isValuable = type.value > 1200;
+                    materials[type.id] = new THREE.MeshStandardMaterial({ 
+                        color: type.color, emissive: type.color, emissiveIntensity: isValuable ? 2.5 : 0.8, roughness: 0.4 
+                    });
+                }
+                const rock = new THREE.Mesh(rockGeo, materials[type.id]);
+                const rx = (Math.random() - 0.5) * 12000, rz = (Math.random() - 0.5) * 12000;
+                if (Math.abs(rx) < 200 && Math.abs(rz) < 200) continue;
+                rock.position.set(rx, getNoise(rx, rz) + 2.5, rz);
+                rock.userData = type;
+                scene.add(rock); rocks.push(rock);
+                count++;
+            }
+            return count;
+        }
+
+        // Başlangıçta sadece Seviye 1 taşlarını oluştur
+        spawnRocksForLevel(1);
+
+        const sunLight = new THREE.DirectionalLight(0xfff5e0, 2.8);
+        sunLight.position.set(1000, 1000, 1000);
+        scene.add(sunLight);
+        const ambLight = new THREE.AmbientLight(0x202030, 0.5);
+        scene.add(ambLight);
+
+        let gameStarted = false;
+        camera.rotation.order = "YXZ";
+        camera.rotation.x = -0.15;
+
+        let mouseX = 0;
+        window.addEventListener('mousemove', (e) => {
+            if (!gameStarted || upgradeMenuOpen) return;
+            const x = (e.clientX / window.innerWidth) * 2 - 1;
+            if (Math.abs(x) < 0.20) { mouseX = 0; } else { mouseX = x > 0 ? (x - 0.20) : (x + 0.20); }
+        });
+
+        document.getElementById("btn-start").onclick = () => {
+            gameStarted = true;
+            document.getElementById("start").style.opacity = "0";
+            setTimeout(() => { document.getElementById("start").style.display = "none"; }, 500);
+            document.getElementById("btn-start").innerText = "🚀 OYUNA DEVAM ET";
+        };
+
+        let gamePaused = false;
+        window.pauseGame = () => { if (!gameStarted) return; gamePaused = true; document.getElementById("pause-screen").style.display = "flex"; };
+        window.resumeGame = () => { gamePaused = false; document.getElementById("pause-screen").style.display = "none"; };
+        window.returnToMenu = () => {
+            gameStarted = false; gamePaused = false;
+            document.getElementById("pause-screen").style.display = "none";
+            document.getElementById("start").style.display = "flex";
+            setTimeout(() => { document.getElementById("start").style.opacity = "1"; }, 10);
+            openMenu('main-view');
+        };
+
+        const keys = {}; window.onkeydown = e => keys[e.code] = true; window.onkeyup = e => keys[e.code] = false;
+        let vy = 0, isJumping = false;
+        const moonGravity = 0.006;
+
+        let currentLevel = 1;
+        let lastSpawnedLevel = 1;
+        
+        let gameTime = 0.25; // Ay saati ilerlemesi 0-1 (06:00 sunrise başlangıç)
+        const dayDuration = 300000; // 5 dakika (realms) bir ay günü
+        let lastTimestamp = 0;
+
+        function updateLevel() {
+            const newLevel = Math.floor(earthSent / 5000) + 1;
+            if (newLevel > currentLevel) {
+                currentLevel = newLevel;
+                const lvlEl = document.getElementById("level-text");
+                if (lvlEl) lvlEl.innerText = `(SEVİYE ${currentLevel})`;
+                
+                // Yeni seviye için taşları doğur
+                let totalNew = 0;
+                for (let l = lastSpawnedLevel + 1; l <= currentLevel; l++) {
+                    totalNew += spawnRocksForLevel(l);
+                    lastSpawnedLevel = l;
+                }
+                
+                if (totalNew > 0) {
+                    document.getElementById("mission-text").innerHTML = `<span style="color:#00ff66; animation: blink 0.5s infinite;">✨ YENİ KAYNAKLAR KEŞFEDİLDİ!</span> Yüzeyde yeni tip madenler ortaya çıktı.`;
+                    setTimeout(() => {
+                        document.getElementById("mission-text").innerHTML = `Maksimum enerji potansiyeline sahip kaynaklar (Helyum-3 vb.) topla ve İstasyona aktararak <b>DÜNYA'YI KURTAR!</b>`;
+                    }, 4000);
+                }
+                
+                window.updateCharSelectionUI();
+            }
+        }
+
+        let noticeTimeout;
+        function showCollectionNotice(data) {
+            document.getElementById("cn-icon").innerText = data.icon;
+            document.getElementById("cn-name").innerText = data.name;
+            document.getElementById("cn-value").innerText = data.value;
+            document.getElementById("cn-info").innerText = data.info;
+            const notice = document.getElementById("collection-notice");
+            notice.style.display = "flex";
+            notice.style.opacity = "0";
+            notice.style.transform = "scale(0.5)";
+            setTimeout(() => {
+                notice.style.opacity = "1";
+                notice.style.transform = "scale(1)";
+            }, 10);
+            clearTimeout(noticeTimeout);
+            noticeTimeout = setTimeout(() => { 
+                notice.style.opacity = "0"; 
+                notice.style.transform = "scale(0.5)";
+                setTimeout(() => notice.style.display = "none", 300); 
+            }, 4000);
+        }
+
+        document.getElementById("btn-upg-cargo").onclick = function () {
+            if (totalEnergy >= 1500) {
+                totalEnergy -= 1500; maxCargo = 20; updateInventorySlots();
+                document.getElementById("tas-max").innerText = "20";
+                this.disabled = true; this.innerText = "ALINDI"; updateEnergyUI();
+            } else { alert("Daha fazla kaynak toplamalısın!"); }
+        };
+        document.getElementById("btn-upg-o2").onclick = function () {
+            if (totalEnergy >= 2500) {
+                totalEnergy -= 2500; o2Drain = 0.0010;
+                this.disabled = true; this.innerText = "ALINDI"; updateEnergyUI();
+            } else { alert("Daha fazla kaynak toplamalısın!"); }
+        };
+        let stationLevel = 1;
+        document.getElementById("btn-upg-station").onclick = function () {
+            if (totalEnergy >= 3000) {
+                totalEnergy -= 3000;
+                stationLevel++;
+                station.scale.set(1 + (stationLevel-1)*0.3, 1 + (stationLevel-1)*0.3, 1 + (stationLevel-1)*0.3);
+                updateEnergyUI();
+            } else { alert("Daha fazla kaynak toplamalısın!"); }
+        };
+
+        function updateEnergyUI() {
+            document.getElementById("energy").innerText = totalEnergy;
+            document.getElementById("upg-balance").innerText = totalEnergy;
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === "KeyQ" && upgradeMenuOpen) {
+                upgradeMenuOpen = false;
+                document.getElementById("upgrade-panel").style.display = "none";
+                keys["KeyQ"] = false;
+            }
+        });
+
+        const meteorites = [];
+        const fallingStars = [];
+        function spawnFallingStar() {
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
+            const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 150)];
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const starLine = new THREE.Line(geometry, lineMat);
+            starLine.position.set((Math.random() - 0.5) * 10000, 5000 + Math.random() * 2000, (Math.random() - 0.5) * 10000);
+            starLine.rotation.set(Math.random(), Math.random(), Math.random());
+            scene.add(starLine);
+            fallingStars.push({ mesh: starLine, life: 1.0, speed: 20 + Math.random() * 30 });
+        }
+        function spawnMeteorite() {
+            const geo = new THREE.SphereGeometry(2, 4, 4);
+            const mat = new THREE.MeshStandardMaterial({ color: 0xff4400, emissive: 0xff2200, emissiveIntensity: 2 });
+            const meteor = new THREE.Mesh(geo, mat);
+            const startX = (Math.random() - 0.5) * 6000, startZ = (Math.random() - 0.5) * 6000;
+            const targetX = startX + (Math.random() - 0.5) * 1000, targetZ = startZ + (Math.random() - 0.5) * 1000;
+            meteor.position.set(startX, 2000, startZ);
+            scene.add(meteor);
+            const light = new THREE.PointLight(0xff4400, 0, 500);
+            scene.add(light);
+            meteorites.push({ mesh: meteor, light: light, target: new THREE.Vector3(targetX, getNoise(targetX, targetZ), targetZ), speed: 15 + Math.random() * 10, done: false });
+        }
+        setInterval(() => { if(gameStarted && !gamePaused && Math.random() > 0.7) spawnFallingStar(); }, 4000);
+        setInterval(() => { if(gameStarted && !gamePaused && Math.random() > 0.8) spawnMeteorite(); }, 12000);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            for (let i = meteorites.length - 1; i >= 0; i--) {
+                const m = meteorites[i];
+                if (m.done) {
+                    m.light.intensity *= 0.9;
+                    if (m.light.intensity < 0.1) { scene.remove(m.mesh); scene.remove(m.light); meteorites.splice(i, 1); }
+                    continue;
+                }
+                m.mesh.position.lerp(m.target, 0.05);
+                m.light.position.copy(m.mesh.position);
+                if (m.mesh.position.distanceTo(m.target) < 10) { m.done = true; m.light.intensity = 50; }
+            }
+            for (let i = fallingStars.length - 1; i >= 0; i--) {
+                const s = fallingStars[i];
+                s.mesh.translateZ(s.speed);
+                s.life -= 0.02;
+                s.mesh.material.opacity = s.life;
+                if (s.life <= 0) { scene.remove(s.mesh); fallingStars.splice(i, 1); }
+            }
+
+            if (gameStarted && !upgradeMenuOpen && !gamePaused) {
+                const speed = 0.75;
+                camera.rotation.y -= mouseX * 0.015;
+                camera.rotation.z = 0;
+                const dir = new THREE.Vector3(); camera.getWorldDirection(dir); dir.y = 0; dir.normalize();
+                const right = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).normalize();
+                if (keys["KeyW"]) { camera.position.addScaledVector(dir, speed); }
+                if (keys["KeyS"]) { camera.position.addScaledVector(dir, -speed); }
+                if (keys["KeyD"]) { camera.position.addScaledVector(right, speed); }
+                if (keys["KeyA"]) { camera.position.addScaledVector(right, -speed); }
+
+                const currentGroundY = getNoise(camera.position.x, camera.position.z) + 12;
+                if (camera.position.y < currentGroundY) { camera.position.y = currentGroundY; vy = 0; isJumping = false; }
+                if (keys["Space"] && !isJumping) { vy = jumpForce; isJumping = true; }
+                if (isJumping) { camera.position.y += vy; vy -= moonGravity; } else { camera.position.y += (currentGroundY - camera.position.y) * 0.25; }
+            }
+
+            // --- DAY/NIGHT & ENVIRONMENT LOGIC (Run always to prevent black screens) ---
+            const timestamp = Date.now();
+            if (lastTimestamp === 0) lastTimestamp = timestamp;
+            const delta = timestamp - lastTimestamp;
+            lastTimestamp = timestamp;
+
+            if (!gamePaused) {
+                gameTime += delta / dayDuration;
+                if (gameTime >= 1) gameTime -= 1;
+            }
+
+            const angle = gameTime * Math.PI * 2;
+            sunLight.position.set(Math.cos(angle) * 1000, Math.sin(angle) * 1000, 500);
+            const sunUp = Math.sin(angle) > 0;
+            sunLight.intensity = sunUp ? (Math.sin(angle) * 3.0) : 0;
+            ambLight.intensity = 0.2 + (sunLight.intensity * 0.1);
+
+            // Clocks & UI Updates
+            const nowE = new Date();
+            document.getElementById("earth-clock").innerText = nowE.toLocaleTimeString('tr-TR');
+            const moonH = Math.floor(gameTime * 24);
+            const moonM = Math.floor((gameTime * 24 % 1) * 60);
+            document.getElementById("moon-clock").innerText = `${moonH.toString().padStart(2, '0')}:${moonM.toString().padStart(2, '0')}`;
+            const baseTemp = sunUp ? (Math.sin(angle) * 120) : (Math.sin(angle) * 173);
+            document.getElementById("temp").innerText = Math.round(baseTemp);
+
+            if (gameStarted && !upgradeMenuOpen && !gamePaused) {
+                const time = Date.now() * 0.0001;
+
+                const dist = camera.position.distanceTo(station.position);
+                if (dist < 45) {
+                    document.getElementById("dock-prompt").style.display = "block";
+                    if (keys["KeyQ"] && !upgradeMenuOpen) {
+                        upgradeMenuOpen = true;
+                        document.getElementById("upgrade-panel").style.display = "block";
+                        document.getElementById("upg-balance").innerText = totalEnergy;
+                        keys["KeyQ"] = false;
+                    }
+                    if (keys["KeyE"] && tasSkor > 0) {
+                        earthSent += potentialEnergy;
+                        let pct = Math.min((earthSent / earthTarget) * 100, 100);
+                        document.getElementById("earth-sent").innerText = earthSent;
+                        document.getElementById("earth-fill").style.width = pct + "%";
+                        if (earthSent >= earthTarget && earthSent - potentialEnergy < earthTarget) {
+                            setTimeout(() => alert("🎉 GÖREV TAMAMLANDI! DÜNYA'YA İHTİYACI OLAN ENERJİYİ GÖNDERDİN VE İNSANLIĞI KURTARDIN!! PİLOT GÖKDOĞAN, TARİHE GEÇTİN."), 500);
+                        }
+                        updateLevel();
+                        tasSkor = 0; potentialEnergy = 0;
+                        document.getElementById("potential").innerText = "0";
+                        document.getElementById("tas").innerText = "0";
+                        document.getElementById("full-warning").style.display = "none";
+                        document.querySelectorAll('.slot').forEach(s => { s.classList.remove('full'); s.innerHTML = ''; });
+                        oxygen = 100; keys["KeyE"] = false;
+                    }
+                    if (keys["KeyR"] && tasSkor > 0) {
+                        totalEnergy += potentialEnergy; updateEnergyUI();
+                        tasSkor = 0; potentialEnergy = 0;
+                        document.getElementById("potential").innerText = "0";
+                        document.getElementById("tas").innerText = "0";
+                        document.getElementById("full-warning").style.display = "none";
+                        document.querySelectorAll('.slot').forEach(s => { s.classList.remove('full'); s.innerHTML = ''; });
+                        oxygen = 100; keys["KeyR"] = false;
+                    }
+                } else { document.getElementById("dock-prompt").style.display = "none"; }
+
+                oxygen -= o2Drain;
+                document.getElementById("o2-fill").style.width = oxygen + "%";
+                if (oxygen <= 0) { alert("Yaşam Desteği (O2) Kesildi! Simülasyon başarısız."); location.reload(); }
+                document.getElementById("coords").innerText = `${Math.round(camera.position.x / 10)}, ${Math.round(camera.position.z / 10)}`;
+
+                for (let i = rocks.length - 1; i >= 0; i--) {
+                    let r = rocks[i];
+                    if (r.position.distanceTo(camera.position) < 20 && tasSkor < maxCargo) {
+                        const data = r.userData;
+                        if (currentLevel >= data.reqLevel) {
+                            potentialEnergy += data.value;
+                            tasSkor++;
+                            document.getElementById("tas").innerText = tasSkor;
+                            document.getElementById("potential").innerText = potentialEnergy;
+                            const slot = document.querySelectorAll('.slot')[tasSkor - 1];
+                            if (slot) { slot.classList.add('full'); slot.innerHTML = `<span style="font-size:24px;">${data.icon}</span><span>${data.value}</span>`; }
+                            showCollectionNotice(data);
+                            scene.remove(r); rocks.splice(i, 1);
+                            if (tasSkor === maxCargo) document.getElementById("full-warning").style.display = "block";
+                        } else {
+                            // Show level error notice briefly
+                            document.getElementById("mission-text").innerHTML = `<span style="color:#ff3333;">❌ YETERSİZ SEVİYE:</span> <b>${data.name}</b> için Seviye ${data.reqLevel} gerekli!`;
+                            setTimeout(() => {
+                                document.getElementById("mission-text").innerHTML = `Maksimum enerji potansiyeline sahip kaynaklar (Helyum-3 vb.) topla ve İstasyona aktararak <b>DÜNYA'YI KURTAR!</b>`;
+                            }, 2000);
+                        }
+                    }
+                }
+            }
+            composer.render();
+        }
+        animate();
+
+        window.onresize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        };
+    </script>
+</body>
+</html>
