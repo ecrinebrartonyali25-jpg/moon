@@ -1,5 +1,8 @@
 # 🌕 Ay Kaşifi: Gökdoğan - Ay Hasadı
 
+> [!TIP]
+> **Projenin Canlı Önizlemesi:** [https://amazing-sunflower-b8c907.netlify.app/](https://amazing-sunflower-b8c907.netlify.app/)
+
 ![Ay Kaşifi Banner](https://img.shields.io/badge/Unity-2022.3%2B-blue?logo=unity&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey?logo=windows)
 ![License](https://img.shields.io/badge/License-MIT-green)
